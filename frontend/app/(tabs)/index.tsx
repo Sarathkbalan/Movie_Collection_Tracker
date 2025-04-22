@@ -5,23 +5,23 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ListRenderItem,
   ActivityIndicator,
+  ListRenderItem,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons, Feather } from '@expo/vector-icons';
-import styles from '../../assets/styles/home.styles';
 import { useRouter } from 'expo-router';
+import styles from '../../assets/styles/home.styles';
 
 type Movie = {
   _id: string;
   title: string;
   description: string;
-  image: string; // Base64 string
+  image: string;
   cast: string;
 };
 
-const BASE_URL = "http://192.168.179.101:3000"; // Update with your LAN IP for physical device testing
+const BASE_URL = "http://192.168.179.101:3000";
 
 export default function HomeScreen(): JSX.Element {
   const router = useRouter();
@@ -45,10 +45,13 @@ export default function HomeScreen(): JSX.Element {
       fetchMovies();
     }, [])
   );
-  const handleEdit = (id: string): void => {
-    console.log('Edit movie with ID:', id);
-    router.push(`/(tabs)/create?id=${id}`);
+
+  const handleEdit = (id: string) => {
+    console.log("Navigating to edit page for movie with ID:", id);
+    router.push(`/(tabs)/edit/${id}`);
+// ✅ include the layout path
   };
+  
   
 
   const handleDelete = async (id: string): Promise<void> => {
@@ -63,25 +66,22 @@ export default function HomeScreen(): JSX.Element {
   };
 
   const renderItem: ListRenderItem<Movie> = ({ item }) => (
-    <View style={styles.bookCard}>
-      <View style={styles.bookImageContainer}>
+    <View style={styles.MovieCard}>
+      <View style={styles.MovieImageContainer}>
         <Image
           source={{ uri: `data:image/jpeg;base64,${item.image}` }}
-          style={styles.bookImage}
+          style={styles.MovieImage}
           resizeMode="cover"
         />
       </View>
-      <View style={styles.bookDetails}>
-        <Text style={styles.bookTitle}>{item.title}</Text>
+      <View style={styles.MovieDetails}>
+        <Text style={styles.MovieTitle}>{item.title}</Text>
         <Text style={styles.caption}>{item.description}</Text>
         <Text style={[styles.caption, { marginTop: 4, fontStyle: 'italic' }]}>
           🎭 Cast: {item.cast}
         </Text>
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <TouchableOpacity
-            onPress={() => handleEdit(item._id)}
-            style={{ marginRight: 16 }}
-          >
+          <TouchableOpacity onPress={() => handleEdit(item._id)} style={{ marginRight: 16 }}>
             <Feather name="edit-3" size={20} color="#333" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleDelete(item._id)}>
@@ -114,5 +114,3 @@ export default function HomeScreen(): JSX.Element {
     </View>
   );
 }
-
-
