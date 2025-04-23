@@ -26,4 +26,4 @@ App will start running here   http://localhost:3000/
 ## Roles:User
 
 supports  type of user:
-1. **User**: Can view, search, and  have a profile (edit,delete).
+1. **User**: Can view, edit, and delete .user have a profile .
